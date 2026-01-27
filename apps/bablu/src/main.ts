@@ -1,12 +1,4 @@
-type User = {
-    firstName: string;
-    lastName: string;
-}
+import dotenv from 'dotenv'
+dotenv.config()
 
-const user: User = {
-    firstName: "maxx",
-    lastName: "dotjsx"
-}
-
-console.log(user);
 
