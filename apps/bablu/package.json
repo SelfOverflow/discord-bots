@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@bots/typescript-config": "*",
+    "@bots/eslint-config": "*",
     "jest": "^30.2.0",
     "msw": "^2.12.7",
     "nodemon": "^3.1.11",
