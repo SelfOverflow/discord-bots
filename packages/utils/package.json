@@ -15,8 +15,9 @@
     "test": "jest"
   },
   "devDependencies": {
+    "@bots/eslint-config": "*",
     "@bots/typescript-config": "*",
-    "@bots/eslint-config": "*"
+    "jest": "^30.2.0"
   },
   "dependencies": {
     "axios": "^1.13.3"
