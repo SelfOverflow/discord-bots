@@ -10,7 +10,9 @@
   "license": "ISC",
   "author": "Mohit Ranjan",
   "type": "module",
-  "main": "index.js",
+  "exports": {
+    ".": "./src/main.ts"
+  },
   "scripts": {
     "test": "jest",
     "lint": "eslint ."
