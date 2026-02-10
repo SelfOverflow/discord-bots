@@ -1,6 +1,8 @@
-import dotenv from "dotenv";
-dotenv.config();
+import type { Event, Context } from "@bots/utils";
 
-// eslint-disable-next-line turbo/no-undeclared-env-vars
-const str = process.env.SECRET_MSG
-console.log(str)
+const handler = (event: Event, context: Context) => {
+  console.log(event);
+  console.log(context);
+};
+
+export default handler;
