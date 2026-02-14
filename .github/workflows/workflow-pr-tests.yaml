@@ -62,6 +62,6 @@ jobs:
       - name: terraform plan
         id: plan
         uses: dflook/terraform-plan@v2.0.0
-        env:
+        with:
           add_github_comment: changes-only
           path: './apps/bablu/terraform'
