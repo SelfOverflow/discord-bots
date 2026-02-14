@@ -52,8 +52,6 @@ jobs:
     steps:
       - name: Clone the repository
         uses: actions/checkout@v6
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
       - name: Configure aws credentials
         uses: aws-actions/configure-aws-credentials@v6.0.0
         with:
@@ -63,7 +61,7 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
       - name: terraform plan
         id: plan
-        uses: dflook/terraform-plan@v1
+        uses: dflook/terraform-plan@v2.0.0
         env:
           add_github_comment: changes-only
           path: './apps/bablu/terraform'
