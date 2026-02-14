@@ -1,9 +1,13 @@
-name: 'Tests on PR'
+name: 'Validations on PR'
 on:
   pull_request:
     branches:
       - main
       - master
+
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
   lint-check:
@@ -38,3 +42,26 @@ jobs:
           npm ci --frozen-lockfile
           npm i -g turbo@^2
           turbo run test
+  
+  plan:
+    name: 'Terraform plan'
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Clone the repository
+        uses: actions/checkout@v6
+      - name: Configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v6.0.0
+        with:
+          audience: sts.amazonaws.com
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_ARN }}
+          role-session-name: Terraform_to_AWS_via_FederatedOIDC
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: terraform plan
+        id: plan
+        uses: dflook/terraform-plan@v1
+        env:
+          add_github_comment: changes-only
+          path: './apps/bablu/terraform'
+          
