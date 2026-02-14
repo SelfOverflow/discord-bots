@@ -1,0 +1,35 @@
+name: "Destroy bablu's infra"
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
+jobs:
+  destroy:
+    name: "Destroy all AWS resources"
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Clone the repository
+        uses: actions/checkout@v6
+      - name: Configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v6.0.0
+        with:
+          audience: sts.amazonaws.com
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_ARN }}
+          role-session-name: Terraform_to_AWS_via_FederatedOIDC
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Plan for destroy
+        uses: dflook/terraform-plan@v2.0.0
+        with:
+          add_github_comment: changes-only
+          path: './apps/bablu/terraform'
+          destroy: true
+      - name: Destroy (fr!)
+        uses: dflook/terraform-destroy@v2.0.0
+        with:
+          path: './apps/bablu/terraform'
