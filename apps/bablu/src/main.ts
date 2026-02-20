@@ -1,8 +1,12 @@
-import type { Event, Context } from "@bots/utils";
+import { Context, APIGatewayProxyResult, APIGatewayEvent } from 'aws-lambda'
 
-const handler = (event: Event, context: Context) => {
-  console.log(event);
-  console.log(context);
-};
-
-export default handler;
+export const handler = async (event: APIGatewayEvent, context: Context): Promise<APIGatewayProxyResult> => {
+  console.log(event)
+  console.log(context)
+  return {
+    statusCode: 200,
+    body: JSON.stringify({
+      message: 'Hello World'
+    })
+  }
+}
