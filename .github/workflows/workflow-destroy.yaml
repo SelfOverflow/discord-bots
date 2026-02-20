@@ -23,12 +23,6 @@ jobs:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_ARN }}
           role-session-name: Terraform_to_AWS_via_FederatedOIDC
           aws-region: ${{ secrets.AWS_REGION }}
-      - name: Plan for destroy
-        uses: dflook/terraform-plan@v2.0.0
-        with:
-          add_github_comment: changes-only
-          path: './apps/bablu/terraform'
-          destroy: true
       - name: Destroy (fr!)
         uses: dflook/terraform-destroy@v2.0.0
         with:
