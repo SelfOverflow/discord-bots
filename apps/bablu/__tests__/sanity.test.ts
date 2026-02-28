@@ -1,4 +1,4 @@
-import { handler } from '../src/index'
+import { handler } from '../src/app'
 describe("Basic handler", () => {
   afterEach(() => {
     jest.restoreAllMocks();
