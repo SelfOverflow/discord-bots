@@ -32,9 +32,9 @@ jobs:
       - name: Build Docker image
         run: docker buildx build --platform linux/amd64 --provenance=false -f ./apps/bablu/Dockerfile -t bablu:latest .
       - name: Tag Docker image
-        run: docker tag bablu:latest ${{ secrets.ECR_URI }}:${IMAGE_TAG}
+        run: docker tag bablu:latest ${{ secrets.ECR_URI }}:${{ github.event.pull_request.head.sha }}
       - name: Push Docker image
-        run: docker push ${{ secrets.ECR_URI }}:${IMAGE_TAG}
+        run: docker push ${{ secrets.ECR_URI }}:${{ github.event.pull_request.head.sha }}
       - name: terraform apply
         id: apply
         uses: dflook/terraform-apply@v2.0.0
@@ -44,5 +44,4 @@ jobs:
             image_tag = "${{ github.event.pull_request.head.sha }}"
 
         env:
-          IMAGE_TAG: ${{ github.event.pull_request.head.sha }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
