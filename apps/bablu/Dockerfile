@@ -23,6 +23,6 @@ RUN npx turbo run build
 FROM base AS runner
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
-WORKDIR ${LAMBDA_TASK_ROOT}
+WORKDIR /apps
 COPY --from=builder /app .
-CMD ["./apps/bablu/dist/index.handler"]
+CMD ["node", "./apps/bablu/dist/index"]
