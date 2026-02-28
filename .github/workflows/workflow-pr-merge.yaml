@@ -34,8 +34,8 @@ jobs:
         run: docker buildx build --platform linux/amd64 --provenance=false -f ./apps/bablu/Dockerfile -t bablu:latest .
       - name: Tag Docker image
         run: docker tag bablu:latest ${{ secrets.ECR_URI }}:latest
-      - name: Push Docker image
-        run: docker push ${{ secrets.ECR_URI }}:latest
+      # - name: Push Docker image
+      #   run: docker push ${{ secrets.ECR_URI }}:latest
       - name: terraform apply
         id: apply
         uses: dflook/terraform-apply@v2.0.0
