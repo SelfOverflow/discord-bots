@@ -16,7 +16,6 @@ jobs:
   deploy:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v6
@@ -33,16 +32,17 @@ jobs:
       - name: Build Docker image
         run: docker buildx build --platform linux/amd64 --provenance=false -f ./apps/bablu/Dockerfile -t bablu:latest .
       - name: Tag Docker image
-        run: docker tag bablu:latest ${{ secrets.ECR_URI }}:${{ github.sha }}
+        run: docker tag bablu:latest ${{ secrets.ECR_URI }}:${IMAGE_TAG}
       - name: Push Docker image
-        run: docker push ${{ secrets.ECR_URI }}:${{ github.sha }}
+        run: docker push ${{ secrets.ECR_URI }}:${IMAGE_TAG}
       - name: terraform apply
         id: apply
         uses: dflook/terraform-apply@v2.0.0
         with:
           path: './apps/bablu/terraform'
           variables: |
-            image_tag = "${{ github.sha }}"
+            image_tag = "${{ github.event.pull_request.head.sha }}"
 
         env:
+          IMAGE_TAG: ${{ github.event.pull_request.head.sha }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
