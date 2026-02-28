@@ -105,6 +105,6 @@ resource "aws_dynamodb_table" "users" {
 }
 
 resource "aws_sqs_queue" "events" {
-  name                      = "${var.project_name}-events"
+  name                       = "${var.project_name}-events"
   visibility_timeout_seconds = 60
 }
