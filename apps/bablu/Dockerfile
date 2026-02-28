@@ -1,4 +1,4 @@
-FROM public.ecr.aws/lambda/nodejs:22 AS base
+FROM node:25-alpine AS base
 # Set working directory
 WORKDIR /app
 # ---
