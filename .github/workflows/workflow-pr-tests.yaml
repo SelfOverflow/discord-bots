@@ -69,5 +69,5 @@ jobs:
           add_github_comment: changes-only
           path: './apps/bablu/terraform'
           variables: |
-            image_tag="${IMAGE_TAG}"
+            image_tag="${{ github.event.pull_request.head.sha }}"
             
