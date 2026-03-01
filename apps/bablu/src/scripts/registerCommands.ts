@@ -1,6 +1,8 @@
+import { config } from 'dotenv'
 import { REST, Routes } from 'discord.js'
 
 import { CommandRegistry } from '../infrastructure/discord/CommandRegistry'
+config()
 
 const register = async () => {
     const registry = new CommandRegistry();
@@ -13,6 +15,14 @@ const register = async () => {
         } catch (error) {
             console.log('Some error occured while refreshing commands!')
             console.error(error)
+        }
+    } else {
+        console.log('Incorrect config!')
+        if (!process.env.DISCORD_TOKEN) {
+            console.error('Discord token was not found')
+        }
+        if (!process.env.CLIENT_ID) {
+            console.error('Client ID was not found')
         }
     }
 }

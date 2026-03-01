@@ -1,0 +1,24 @@
+name: Sync Discord Commands
+
+on:
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 25
+
+      - run: npm ci
+      - run: npm run build
+
+      - name: Register Commands
+        run: node ./apps/bablu/dist/scripts/registerCommands.js
+        env:
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
