@@ -1,7 +1,14 @@
 {
   "extends": "@bots/typescript-config/base.json",
   "compilerOptions": {
-    "outDir": "dist"
+    "outDir": "dist",
+    "rootDir": "src",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "module": "nodenext",
+    "moduleResolution": "NodeNext",
+    "target": "ES2022"
   },
   "include": ["src"],
   "exclude": ["node_modules"]

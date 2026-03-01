@@ -9,11 +9,14 @@
   ],
   "license": "ISC",
   "author": "Mohit Ranjan",
-  "type": "module",
+  "main": "./dist/main.js",
+  "types": "./dist/main.d.ts",
   "exports": {
-    ".": "./src/main.ts"
+    ".": "./dist/main.js"
   },
+  "files": ["dist"],
   "scripts": {
+    "build": "tsc -b",
     "lint": "eslint ."
   },
   "devDependencies": {
@@ -23,10 +26,12 @@
     "@bots/eslint-config": "*",
     "@bots/typescript-config": "*",
     "@types/jest": "^30.0.0",
+    "@types/pino": "^7.0.4",
     "babel-jest": "^30.2.0",
     "jest": "^30.2.0"
   },
   "dependencies": {
-    "axios": "^1.13.3"
+    "axios": "^1.13.3",
+    "pino": "^10.3.1"
   }
 }

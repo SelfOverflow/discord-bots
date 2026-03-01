@@ -2,7 +2,10 @@ import { config } from 'dotenv'
 import { Client, GatewayIntentBits, Events } from "discord.js";
 import { PingCommandHandler } from "./application/commands/ping/PingCommandHandler";
 import { DiscordCommandAdapter } from "./infrastructure/discord/DiscordCommandAdapter";
+import { PinoLogger as Logger } from '@bots/utils'
 config()
+
+const logger = new Logger();
 
 export const handler = () => {
   const client = new Client({
@@ -16,8 +19,8 @@ export const handler = () => {
   client.on(Events.InteractionCreate, async (interaction) => {
     if (!interaction.isChatInputCommand()) return;
     if (interaction.commandName === 'ping') {
-      const handler = new PingCommandHandler();
-      const adapter = new DiscordCommandAdapter(handler);
+      const handler = new PingCommandHandler(logger);
+      const adapter = new DiscordCommandAdapter(handler, logger);
       await adapter.handle(interaction)
     }
   })
