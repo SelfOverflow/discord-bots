@@ -95,6 +95,26 @@ EOF
   }
 }
 
+resource "aws_security_group" "ec2_ecs" {
+  name        = "${var.project_name}-ecs-ec2-sg"
+  description = "Security group for ECS container instances"
+  vpc_id      = aws_vpc.main.id
+
+  # No inbound access required
+  ingress = []
+
+  # Allow outbound traffic to internet
+  egress {
+    description = "Allow all outbound traffic"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = local.common_tags
+}
+
 resource "aws_autoscaling_group" "ecs" {
   min_size            = 1
   max_size            = 1
