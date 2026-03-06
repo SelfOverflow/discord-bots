@@ -1,9 +1,7 @@
 resource "aws_ecs_task_definition" "bot" {
   family                   = "${var.project_name}-task"
-  requires_compatibilities = ["FARGATE"]
-  network_mode             = "awsvpc"
-  cpu                      = 512
-  memory                   = 1024
+  requires_compatibilities = ["EC2"]
+  network_mode             = "bridge"
 
   execution_role_arn = aws_iam_role.ecs_execution_role.arn
   task_role_arn      = aws_iam_role.ecs_task_role.arn
@@ -14,14 +12,11 @@ resource "aws_ecs_task_definition" "bot" {
       image     = "${aws_ecr_repository.bablu-ecr.repository_url}:${var.image_tag}"
       essential = true
 
-      portMappings = []
-
       secrets = [
         {
           name      = "DISCORD_TOKEN"
           valueFrom = aws_secretsmanager_secret.discord_token.arn
         },
-
         {
           name      = "CLIENT_ID"
           valueFrom = aws_secretsmanager_secret.app_id.arn
@@ -62,16 +57,52 @@ resource "aws_ecs_service" "bot" {
   cluster         = aws_ecs_cluster.main.id
   task_definition = aws_ecs_task_definition.bot.arn
   desired_count   = 1
-  launch_type     = "FARGATE"
-
-  network_configuration {
-    subnets          = [aws_subnet.public_a.id, aws_subnet.public_b.id]
-    security_groups  = [aws_security_group.ecs_sg.id]
-    assign_public_ip = true
-  }
 
   deployment_minimum_healthy_percent = 50
   deployment_maximum_percent         = 200
 
   tags = local.common_tags
+}
+
+data "aws_ami" "ecs" {
+  most_recent = true
+  owners = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-ecs-hvm-*-x86_64-ebs"]
+  }
+}
+
+resource "aws_launch_template" "ecs" {
+  name_prefix   = "ecs-bot"
+  image_id      = data.aws_ami.ecs.id
+  instance_type = "t4g.micro"
+
+  user_data = base64encode(<<EOF
+#!/bin/bash
+echo ECS_CLUSTER=${aws_ecs_cluster.main.name} >> /etc/ecs/ecs.config
+EOF
+  )
+
+  iam_instance_profile {
+    name = aws_iam_instance_profile.ecs.name
+  }
+
+  network_interfaces {
+    associate_public_ip_address = true
+    security_groups             = [aws_security_group.ec2_ecs.id]
+  }
+}
+
+resource "aws_autoscaling_group" "ecs" {
+  min_size            = 1
+  max_size            = 1
+  desired_capacity    = 1
+  vpc_zone_identifier = [aws_subnet.public_a.id]
+
+  launch_template {
+    id      = aws_launch_template.ecs.id
+    version = "$Latest"
+  }
 }
