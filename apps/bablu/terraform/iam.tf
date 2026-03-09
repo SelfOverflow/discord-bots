@@ -9,34 +9,6 @@ data "aws_iam_policy_document" "ecs_task_assume" {
   }
 }
 
-data "aws_iam_policy_document" "app_policy" {
-
-  statement {
-    actions = [
-      "dynamodb:GetItem",
-      "dynamodb:PutItem",
-      "dynamodb:UpdateItem",
-      "dynamodb:DeleteItem",
-      "dynamodb:Query"
-    ]
-    resources = [
-      aws_dynamodb_table.users.arn
-    ]
-  }
-
-  statement {
-    actions = [
-      "sqs:SendMessage",
-      "sqs:ReceiveMessage",
-      "sqs:DeleteMessage",
-      "sqs:GetQueueAttributes"
-    ]
-    resources = [
-      aws_sqs_queue.events.arn
-    ]
-  }
-}
-
 data "aws_iam_policy_document" "execution_secrets_policy" {
   statement {
     actions = [
