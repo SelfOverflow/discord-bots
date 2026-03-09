@@ -11,6 +11,7 @@ resource "aws_ecs_task_definition" "bot" {
       name      = "bot"
       image     = "${aws_ecr_repository.bablu-ecr.repository_url}:${var.image_tag}"
       essential = true
+      memory    = 1024
 
       secrets = [
         {
@@ -58,7 +59,7 @@ resource "aws_ecs_service" "bot" {
 
 data "aws_ami" "ecs" {
   most_recent = true
-  owners = ["amazon"]
+  owners      = ["amazon"]
 
   filter {
     name   = "name"
