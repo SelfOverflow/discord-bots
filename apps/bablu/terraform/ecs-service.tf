@@ -81,7 +81,6 @@ EOF
   )
 
   iam_instance_profile {
-    name = aws_iam_instance_profile.ecs.name
     arn = aws_iam_instance_profile.ecs.arn
   }
 
