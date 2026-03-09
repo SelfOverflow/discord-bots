@@ -12,6 +12,7 @@ resource "aws_ecs_task_definition" "bot" {
       image     = "${aws_ecr_repository.bablu-ecr.repository_url}:${var.image_tag}"
       essential = true
       memory    = 1024
+      cpu       = 1
 
       secrets = [
         {
