@@ -82,29 +82,3 @@ resource "aws_security_group" "ecs_sg" {
     Name = "${var.project_name}-ecs-sg"
   }
 }
-
-resource "aws_dynamodb_table" "users" {
-  name         = "${var.project_name}-users"
-  billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "pk"
-  range_key    = "sk"
-
-  attribute {
-    name = "pk"
-    type = "S"
-  }
-
-  attribute {
-    name = "sk"
-    type = "S"
-  }
-
-  tags = {
-    Name = "${var.project_name}-users-table"
-  }
-}
-
-resource "aws_sqs_queue" "events" {
-  name                       = "${var.project_name}-events"
-  visibility_timeout_seconds = 60
-}

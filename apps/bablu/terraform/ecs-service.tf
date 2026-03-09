@@ -27,14 +27,6 @@ resource "aws_ecs_task_definition" "bot" {
         {
           name  = "NODE_ENV"
           value = "production"
-        },
-        {
-          name  = "DYNAMODB_TABLE"
-          value = aws_dynamodb_table.users.name
-        },
-        {
-          name  = "SQS_QUEUE_URL"
-          value = aws_sqs_queue.events.url
         }
       ]
 
