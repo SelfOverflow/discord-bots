@@ -1,6 +1,6 @@
 data "aws_iam_policy_document" "ecs_task_doc" {
   statement {
-    actions = ["sts:AssumeRole", "secretsmanager:GetSecretValue"]
+    actions = ["sts:AssumeRole"]
     effect  = "Allow"
 
     principals {
