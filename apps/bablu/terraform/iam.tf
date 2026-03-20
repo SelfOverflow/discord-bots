@@ -27,7 +27,7 @@ resource "aws_iam_policy" "execution_secrets_policy" {
 }
 
 resource "aws_iam_role_policy_attachment" "execution_secrets_attach" {
-  role       = aws_iam_role.bablu-ecs-node-role.name
+  role       = aws_iam_role.ecs_exec_role.name
   policy_arn = aws_iam_policy.execution_secrets_policy.arn
 }
 
