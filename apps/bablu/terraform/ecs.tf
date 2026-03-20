@@ -22,6 +22,12 @@ resource "aws_launch_template" "bablu-ecs-ec2" {
       echo ECS_CLUSTER=${aws_ecs_cluster.bablu-ecs-cluster.name} >> /etc/ecs/ecs.config;
     EOF
   )
+
+  network_interfaces {
+    associate_public_ip_address = true
+    subnet_id                   = aws_subnet.bablu-public-subnet.id
+    security_groups             = [aws_security_group.public-security-group.id]
+  }
 }
 
 resource "aws_autoscaling_group" "ecs" {
@@ -83,11 +89,8 @@ resource "aws_ecs_service" "bablu-bot" {
   cluster         = aws_ecs_cluster.bablu-ecs-cluster.id
   task_definition = aws_ecs_task_definition.bablu.arn
   desired_count   = 1
+  launch_type     = "EC2"
 
-  network_configuration {
-    security_groups = [aws_security_group.public-security-group.id]
-    subnets         = [aws_subnet.bablu-public-subnet.id]
-  }
 
   capacity_provider_strategy {
     capacity_provider = aws_ecs_capacity_provider.main.name
