@@ -77,3 +77,30 @@ resource "aws_ecs_cluster_capacity_providers" "main" {
     weight            = 100
   }
 }
+
+resource "aws_ecs_service" "bablu-bot" {
+  name            = "${var.project_name}-ecs-service"
+  cluster         = aws_ecs_cluster.bablu-ecs-cluster.id
+  task_definition = aws_ecs_task_definition.bablu.arn
+  desired_count   = 1
+
+  network_configuration {
+    security_groups = [aws_security_group.public-security-group.id]
+    subnets         = [aws_subnet.bablu-public-subnet.id]
+  }
+
+  capacity_provider_strategy {
+    capacity_provider = aws_ecs_capacity_provider.main.name
+    base              = 1
+    weight            = 100
+  }
+
+  ordered_placement_strategy {
+    type  = "spread"
+    field = "attribute:ecs.availability-zone"
+  }
+
+  lifecycle {
+    ignore_changes = [desired_count]
+  }
+}
