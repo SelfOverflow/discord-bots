@@ -26,7 +26,7 @@ resource "aws_launch_template" "bablu-ecs-ec2" {
 
 resource "aws_autoscaling_group" "ecs" {
   name                      = "${var.project_name}-ecs-autoscaling-group"
-  vpc_zone_identifier       = aws_subnet.bablu-public-subnet.id
+  vpc_zone_identifier       = [aws_subnet.bablu-public-subnet.id]
   min_size                  = 1
   max_size                  = 2
   health_check_grace_period = 0
