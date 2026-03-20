@@ -89,7 +89,6 @@ resource "aws_ecs_service" "bablu-bot" {
   cluster         = aws_ecs_cluster.bablu-ecs-cluster.id
   task_definition = aws_ecs_task_definition.bablu.arn
   desired_count   = 1
-  launch_type     = "EC2"
 
 
   capacity_provider_strategy {
