@@ -11,12 +11,12 @@ data "aws_iam_policy_document" "ecs_task_doc" {
 }
 
 resource "aws_iam_role" "ecs_task_role" {
-  name        = "${var.project_name}-ecs-task-role"
+  name               = "${var.project_name}-ecs-task-role"
   assume_role_policy = data.aws_iam_policy_document.ecs_task_doc.json
 }
 
 resource "aws_iam_role" "ecs_exec_role" {
-  name        = "${var.project_name}-ecs-exec-role"
+  name               = "${var.project_name}-ecs-exec-role"
   assume_role_policy = data.aws_iam_policy_document.ecs_task_doc.json
 }
 
@@ -38,6 +38,12 @@ resource "aws_ecs_task_definition" "bablu" {
     image        = "${aws_ecr_repository.bablu-bot-ecr.repository_url}:${var.image_tag}",
     essential    = true,
     portMappings = [],
+    secrets = [
+      {
+        name      = "DISCORD_TOKEN"
+        valueFrom = aws_secretsmanager_secret.discord_token.arn
+      }
+    ]
 
     environment = [
       { name = "EXAMPLE", value = "example" }
