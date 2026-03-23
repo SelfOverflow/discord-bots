@@ -11,7 +11,8 @@ const register = async () => {
         try {
             const rest = new REST().setToken(process.env.DISCORD_TOKEN)
             await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), { body: commands });
-            console.log('Commands refreshed successfully!')
+            console.log('Following commands refreshed successfully!')
+            console.log(commands)
         } catch (error) {
             console.log('Some error occured while refreshing commands!')
             console.error(error)
