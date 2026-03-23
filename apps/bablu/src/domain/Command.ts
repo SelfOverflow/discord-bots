@@ -1,5 +1,5 @@
 import { InteractionReplyOptions, CommandInteraction } from 'discord.js'
 
 export interface Command {
-    execute(interaction: CommandInteraction): Promise<InteractionReplyOptions>;
+    execute(interaction: CommandInteraction): Promise<InteractionReplyOptions> | Promise<void> | undefined;
 }

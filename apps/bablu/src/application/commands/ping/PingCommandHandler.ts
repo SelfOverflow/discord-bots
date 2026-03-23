@@ -7,7 +7,6 @@ class PingCommandHandler implements Command {
 
   async execute(interaction: CommandInteraction): Promise<InteractionReplyOptions> {
     this.logger.info('Executing ping command')
-    console.log(interaction)
     const reply = `Pong baby! Now updated`
     return {
       content: reply

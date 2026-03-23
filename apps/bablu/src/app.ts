@@ -3,6 +3,7 @@ import { Client, GatewayIntentBits, Events } from "discord.js";
 import { PingCommandHandler } from "./application/commands/ping/PingCommandHandler";
 import { DiscordCommandAdapter } from "./infrastructure/discord/DiscordCommandAdapter";
 import { PinoLogger as Logger } from '@bots/utils'
+import { AddBirthdayCommandHandler } from './application/commands/addBirthday/AddBirthdayCommandHandler';
 config()
 
 const logger = new Logger();
@@ -17,9 +18,17 @@ export const handler = () => {
   })
 
   client.on(Events.InteractionCreate, async (interaction) => {
+    let handler = null;
     if (!interaction.isChatInputCommand()) return;
+    // we decide which command to use, based on the slash command name
     if (interaction.commandName === 'ping') {
-      const handler = new PingCommandHandler(logger);
+      handler = new PingCommandHandler(logger);
+    }
+    else if (interaction.commandName === 'addBirthday') {
+      handler = new AddBirthdayCommandHandler(logger);
+    }
+
+    if (handler) {
       const adapter = new DiscordCommandAdapter(handler, logger);
       await adapter.handle(interaction)
     }
