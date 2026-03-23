@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, MessageFlags } from "discord.js";
+import { ChatInputCommandInteraction, MessageFlags, CommandInteraction } from "discord.js";
 import { Command } from "../../domain/Command";
 import { PinoLogger as Logger } from "@bots/utils";
 
@@ -8,7 +8,7 @@ class DiscordCommandAdapter {
     private readonly logger: Logger,
   ) {}
 
-  async handle(interaction: ChatInputCommandInteraction) {
+  async handle(interaction: CommandInteraction) {
     const context = {
       command: interaction.commandName,
       userId: interaction.user.id,
@@ -19,7 +19,7 @@ class DiscordCommandAdapter {
     const start = Date.now();
     try {
       this.logger.info("Command received", context);
-      const response = await this.command.execute();
+      const response = await this.command.execute(interaction);
       await interaction.reply(response);
       this.logger.info("Command executed successfully", {
         ...context,

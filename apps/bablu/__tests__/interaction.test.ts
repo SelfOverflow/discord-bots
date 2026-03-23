@@ -19,13 +19,17 @@ describe("Interaction test", () => {
     };
 
     const mockCommand = {
-      execute: jest.fn().mockResolvedValue("Pong baby!"),
+      execute: jest.fn().mockResolvedValue({
+        content: `Pong baby! Now updated`
+      }),
     };
 
     const adapter = new DiscordCommandAdapter(mockCommand, mockLogger as unknown as PinoLogger);
     await adapter.handle(
       mockInteraction as unknown as ChatInputCommandInteraction,
     );
-    expect(mockReply).toHaveBeenCalledWith("Pong baby!");
+    expect(mockReply).toHaveBeenCalledWith({
+      content: `Pong baby! Now updated`
+    });
   });
 });
