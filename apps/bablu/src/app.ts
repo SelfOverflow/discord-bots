@@ -1,5 +1,5 @@
 import { config } from 'dotenv'
-import { Client, GatewayIntentBits, Events, ModalSubmitInteraction } from "discord.js";
+import { Client, GatewayIntentBits, Events, ModalSubmitInteraction, ChatInputCommandInteraction, CommandInteraction } from "discord.js";
 import { PingCommandHandler } from "./application/commands/ping/PingCommandHandler";
 import { DiscordCommandAdapter } from "./infrastructure/discord/DiscordCommandAdapter";
 import { PinoLogger as Logger } from '@bots/utils'
@@ -21,25 +21,28 @@ export const handler = () => {
 
   client.on(Events.InteractionCreate, async (interaction) => {
     let handler = null;
-    if (!interaction.isChatInputCommand()) return;
+    
     // we decide which command to use, based on the slash command name
-    if (interaction.commandName === COMMANDS.PING) {
+    if ((interaction as ChatInputCommandInteraction).commandName === COMMANDS.PING) {
       handler = new PingCommandHandler(logger);
     }
-    else if (interaction.commandName === COMMANDS.ADD_BIRTHDAY) {
+    else if ((interaction as ChatInputCommandInteraction).commandName === COMMANDS.ADD_BIRTHDAY) {
       handler = new AddBirthdayCommandHandler(logger);
     }
-    else if (interaction.isModalSubmit()) {
-      const modalInteraction = interaction as unknown as ModalSubmitInteraction
-      if (modalInteraction.customId === BIRTHDAY_MODAL_ID) {
-        handler = new SubmitBirthdayCommandHandler(logger);
-      }
-    }
-
+    else if (interaction.isModalSubmit() && (interaction as ModalSubmitInteraction).customId === BIRTHDAY_MODAL_ID) {
+      handler = new SubmitBirthdayCommandHandler(logger);
+    } 
+    
     if (handler) {
       const adapter = new DiscordCommandAdapter(handler, logger);
-      await adapter.handle(interaction)
+      await adapter.handle(interaction as CommandInteraction)
     }
+    
+    else {
+      logger.error(`Cannot handle the received command`)
+      console.log(interaction)
+    }
+    
   })
 
   if (process.env.DISCORD_TOKEN) {
