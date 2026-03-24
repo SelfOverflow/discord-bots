@@ -11,12 +11,17 @@ export const prepareOption = (option: NumericOption) => {
 export const getBirthdayModal = () => {
     // Prepare a high level modal
     const modal = new ModalBuilder().setCustomId('birthday-modal').setTitle('Set your birthday 🎂')
+    
     const daySelector = new TextInputBuilder()
             .setCustomId('day-select')
             .setPlaceholder('Enter the day (1-31)')
             .setRequired(true)
             .setStyle(TextInputStyle.Short)
             .setPlaceholder('21')
+    
+    const dayLabel = new LabelBuilder()
+            .setLabel('Please provide your birth date')
+            .setTextInputComponent(daySelector)
     
     // Prepare select option for month
     const monthSelector = new StringSelectMenuBuilder()
@@ -25,6 +30,10 @@ export const getBirthdayModal = () => {
             .setRequired(true)
             .addOptions(MONTHS.map(prepareOption))
 
+    const monthLabel = new LabelBuilder()
+            .setLabel('Please provide your birth month')
+            .setStringSelectMenuComponent(monthSelector)
+
     const yearSelector = new TextInputBuilder()
             .setCustomId('year-select')
             .setPlaceholder('Select the year')
@@ -32,12 +41,10 @@ export const getBirthdayModal = () => {
             .setStyle(TextInputStyle.Short)
             .setPlaceholder('1998')
 
-    const birthdayLabel = new LabelBuilder()
-            .setLabel('Please provide your birthday')
-            .setTextInputComponent(daySelector)
-            .setStringSelectMenuComponent(monthSelector)
+   const yearLabel = new LabelBuilder()
+            .setLabel('Please provide your birth year')
             .setTextInputComponent(yearSelector)
 
-    modal.addLabelComponents(birthdayLabel)
+    modal.addLabelComponents(dayLabel, monthLabel, yearLabel)
     return modal;
 }
