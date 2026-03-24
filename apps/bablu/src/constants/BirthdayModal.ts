@@ -1,6 +1,7 @@
 import { LabelBuilder, ModalBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, TextInputBuilder, TextInputStyle } from "discord.js";
 import { MONTHS } from '@bots/utils'
 import type { NumericOption } from '@bots/utils'
+import { BIRTHDAY_MODAL_ID } from './commands'
 
 export const prepareOption = (option: NumericOption) => {
     return new StringSelectMenuOptionBuilder()
@@ -10,7 +11,7 @@ export const prepareOption = (option: NumericOption) => {
 
 export const getBirthdayModal = () => {
     // Prepare a high level modal
-    const modal = new ModalBuilder().setCustomId('birthday-modal').setTitle('Set your birthday 🎂')
+    const modal = new ModalBuilder().setCustomId(BIRTHDAY_MODAL_ID).setTitle('Set your birthday 🎂')
     
     const daySelector = new TextInputBuilder()
             .setCustomId('day-select')
