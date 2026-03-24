@@ -43,6 +43,7 @@ jobs:
         run: |
           npm ci --frozen-lockfile
           npm i -g turbo@^2
+          turbo run build
           turbo run test
   
   plan:
