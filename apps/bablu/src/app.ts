@@ -1,4 +1,3 @@
-import { config } from 'dotenv'
 import { Client, GatewayIntentBits, Events, ModalSubmitInteraction, ChatInputCommandInteraction, CommandInteraction } from "discord.js";
 import { PingCommandHandler } from "./application/commands/ping/PingCommandHandler";
 import { DiscordCommandAdapter } from "./infrastructure/discord/DiscordCommandAdapter";
@@ -6,7 +5,7 @@ import { PinoLogger as Logger } from '@bots/utils'
 import { AddBirthdayCommandHandler } from './application/commands/addBirthday/AddBirthdayCommandHandler';
 import { SubmitBirthdayCommandHandler } from './application/commands/birthdaySubmit/SubmitBirthdayCommandHandler'
 import { COMMANDS, BIRTHDAY_MODAL_ID } from './constants/commands'
-config()
+import { CheckBirthdayCommandHandler } from './application/commands/checkBirthday/CheckBirthdayCommandHandler';
 
 export const makeApp = (logger: Logger) => {
   const client = new Client({
@@ -29,6 +28,9 @@ export const makeApp = (logger: Logger) => {
     }
     else if (interaction.isModalSubmit() && (interaction as ModalSubmitInteraction).customId === BIRTHDAY_MODAL_ID) {
       handler = new SubmitBirthdayCommandHandler(logger);
+    }
+    else if ((interaction as ChatInputCommandInteraction).commandName === COMMANDS.CHECK_BIRTHDAY) {
+      handler = new CheckBirthdayCommandHandler(logger);
     }
 
     if (handler) {

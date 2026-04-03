@@ -25,4 +25,4 @@ FROM base AS runner
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 WORKDIR /apps
 COPY --from=builder /app .
-CMD ["node", "./apps/bablu/dist/index"]
+CMD ["node", "./apps/bablu/dist/src/index"]
