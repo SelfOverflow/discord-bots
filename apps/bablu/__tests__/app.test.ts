@@ -1,12 +1,13 @@
 import { makeApp } from '../src/app'
-import { ChatInputCommandInteraction, ClientEvents, Events, MessageFlags } from 'discord.js'
+import { ChatInputCommandInteraction, Events, MessageFlags } from 'discord.js'
 import { BIRTHDAY_MODAL_ID, DAY_ID, MONTH_ID, YEAR_ID } from '../src/constants/commands'
 import { REPLIES } from '../src/constants/replies'
+import { PinoLogger } from '@bots/utils'
 
 describe('Discord client events test', () => {
     const mockReply = jest.fn();
     const mockShowModal = jest.fn();
-    const app = makeApp();
+    const app = makeApp(new PinoLogger());
 
     const pingInteraction = {
         id: 'test-ping-command',

@@ -8,8 +8,7 @@ import { SubmitBirthdayCommandHandler } from './application/commands/birthdaySub
 import { COMMANDS, BIRTHDAY_MODAL_ID } from './constants/commands'
 config()
 
-const logger = new Logger();
-export const makeApp = () => {
+export const makeApp = (logger: Logger) => {
   const client = new Client({
     intents: [GatewayIntentBits.Guilds],
   });

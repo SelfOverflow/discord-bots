@@ -2,9 +2,10 @@ import { makeApp } from '../../../app'
 import { MessageFlags, Events, ModalSubmitInteraction } from 'discord.js'
 import { DAY_ID, MONTH_ID, YEAR_ID, BIRTHDAY_MODAL_ID } from '../../../constants/commands'
 import { REPLIES } from '../../../constants/replies'
+import { PinoLogger } from '@bots/utils'
 
 describe('Command to handle birthday submission', () => {
-    const app = makeApp()
+    const app = makeApp(new PinoLogger())
     const mockReply = jest.fn();
 
     const validBirthdayInteractionSubmit = {
