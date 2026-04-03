@@ -31,12 +31,11 @@ class DiscordCommandAdapter {
       this.logger.error("Command execution failed", {
         ...context,
         error: (error as Error).message,
-        stack: (error as Error).stack,
       });
 
       if (!interaction.replied) {
         await interaction.reply({
-          content: "Something went wrong!",
+          content: (error as Error).message,
           flags: MessageFlags.Ephemeral,
         });
       }

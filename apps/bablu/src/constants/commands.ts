@@ -1,7 +1,8 @@
 export const COMMANDS = {
     PING : 'ping',
     ADD_BIRTHDAY: 'addbirthday',
-    SUBMIT_BIRTHDAY: 'submitbirthday'
+    SUBMIT_BIRTHDAY: 'submitbirthday',
+    CHECK_BIRTHDAY: 'checkbirthday'
 }
 
 export const BIRTHDAY_MODAL_ID = 'birthday-modal'

@@ -14,12 +14,16 @@ class SubmitBirthdayCommandHandler implements Command {
         const month = modalSubmitInteraction.fields.getStringSelectValues(MONTH_ID)
         const year = modalSubmitInteraction.fields.getTextInputValue(YEAR_ID)
         this.logger.info(`Received date [day]: ${day}, [month]: ${month}, [year]: ${year}`)
-        // put validation logic in here at the end
-        // create date
-        const date = parse(`${day}/${month}/${year}`, 'dd/MM/yyyy', new Date())
-        return {
-            content: `${REPLIES.BIRTHDAY_SUBMIT_ACKNOWLEDGEMENT} ${format(date, 'MMMM d, yyyy')}`,
-            flags: MessageFlags.Ephemeral
+        try {
+            // an error will be thrown in case of invalid date
+            const date = parse(`${day}/${month}/${year}`, 'dd/MM/yyyy', new Date())
+            return {
+                content: `${REPLIES.BIRTHDAY_SUBMIT_ACKNOWLEDGEMENT} ${format(date, 'MMMM d, yyyy')}`,
+                flags: MessageFlags.Ephemeral
+            }
+        } catch (error) {
+            this.logger.error(`Invalid date provided`)
+            throw new Error(`Invalid date provided ${day}/${month}/${year}`)
         }
     }
 }
