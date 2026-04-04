@@ -34,10 +34,17 @@ resource "aws_ecs_task_definition" "bablu" {
   memory             = 256
 
   container_definitions = jsonencode([{
-    name         = "app",
-    image        = "${aws_ecr_repository.bablu-bot-ecr.repository_url}:${var.image_tag}",
-    essential    = true,
-    portMappings = [],
+    name      = "app",
+    image     = "${aws_ecr_repository.bablu-bot-ecr.repository_url}:${var.image_tag}",
+    essential = true,
+    portMappings = [
+      {
+        containerPort = 3000
+        hostPort      = 3000
+        protocol      = "tcp"
+        name          = "bot-check-port"
+      }
+    ],
     secrets = [
       {
         name      = "DISCORD_TOKEN"
